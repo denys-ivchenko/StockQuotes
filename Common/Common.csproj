@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Telesyk.StockQuotes.Common</AssemblyName>
+    <RootNamespace>Telesyk.StockQuotes</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ConsoleWriter.cs" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;" />
+  </Target>
+
+</Project>

@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-using Resources = Telesyk.StockQuotes.Properties.Resources;
+using Strings = Telesyk.StockQuotes.Properties.Strings;
 
 namespace Telesyk.StockQuotes
 {
@@ -26,11 +26,11 @@ namespace Telesyk.StockQuotes
 
 		public static Settings Current => _instance.Value;
 
-		public int RouterCount { get; private set; }
+		public int RouterQuantity { get; private set; }
 
-		public int DelayInterval { get; private set; }
+		public int CrashInterval { get; private set; }
 
-		public int DelayDuration { get; private set; }
+		public int CrashDuration { get; private set; }
 
 		#endregion
 
@@ -38,21 +38,33 @@ namespace Telesyk.StockQuotes
 
 		protected override void Init(XmlDocument config)
 		{
-			var nodeRouterCount = config.SelectSingleNode("//settings/multicast/router-count");
+			initCrashSettings(config);
+			initRouteSettings(config);
+		}
 
-			if (!int.TryParse(nodeRouterCount?.InnerText, out int routerCount))
-				ThrowConfigurationException(Resources.Configuration_Name_RouterCount);
+		#endregion
 
-			RouterCount = routerCount;
+		#region Private methods
 
-			var nodeDelayInterval = config.SelectSingleNode("//settings/delay-interval");
-			var nodeDelayDuration = config.SelectSingleNode("//settings/delay-duration");
+		private void initCrashSettings(XmlDocument config)
+		{
+			var nodeCrashDelay = config.SelectSingleNode("//settings/crash-delay");
 
-			int.TryParse(nodeDelayInterval?.InnerText, out int delayInterval);
-			int.TryParse(nodeDelayDuration?.InnerText, out int delayDuration);
+			int.TryParse(nodeCrashDelay?.Attributes?["interval"]?.InnerText, out int crashInterval);
+			int.TryParse(nodeCrashDelay?.Attributes?["duration"]?.InnerText, out int crashDuration);
 
-			DelayInterval = delayInterval;
-			DelayDuration = delayDuration;
+			CrashInterval = crashInterval;
+			CrashDuration = crashDuration;
+		}
+
+		private void initRouteSettings(XmlDocument config)
+		{
+			var nodeRouterCount = config.SelectSingleNode("//settings/multicast/router-quantity");
+
+			if (!int.TryParse(nodeRouterCount?.InnerText, out int routerQuantity))
+				ThrowConfigurationException(Strings.Configuration_Name_RouterQuantity);
+
+			RouterQuantity = routerQuantity;
 		}
 
 		#endregion

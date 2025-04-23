@@ -7,10 +7,9 @@ namespace Telesyk.StockQuotes
 		private static int _heightLength = Console.WindowHeight - 1;
 		private static int _columnLength;
 		private static int _columnCount;
-		private static int _top = 2;
+		private static int _top = 3;
 		private static int _left = 1;
 		private static decimal _lastValue = -1;
-		private static bool _quit;
 
 		static Processor()
 		{
@@ -39,6 +38,8 @@ namespace Telesyk.StockQuotes
 			{
 				Console.CursorLeft = Console.CursorTop = 0;
 				Console.ForegroundColor = ConsoleColor.White;
+
+				Console.WriteLine();
 				Console.Write($" Started! Press Enter for pausing... Press Ctrl+C or Ctrl+Break to quit.");//                                                                                  ");
 
 				generator.Start();
@@ -49,14 +50,11 @@ namespace Telesyk.StockQuotes
 
 				Console.CursorLeft = Console.CursorTop = 0;
 				Console.ForegroundColor = ConsoleColor.White;
+
+				Console.WriteLine();
 				Console.Write($" Paused!  Press Enter to continue... Press Ctrl+C or Ctrl+Break to quit.");// Type \"quit\" or \"q\" and press Enter for quit or just press Enter to continue: ");
 
 				Console.ReadKey();
-
-				//var command = Console.ReadLine()?.Trim().ToLower();
-
-				//if (command == "quit" || command == "q")
-				//	break;
 			}
 		}
 
@@ -75,7 +73,7 @@ namespace Telesyk.StockQuotes
 
 			if (_top == _heightLength)
 			{
-				_top = 2;
+				_top = 3;
 
 				_left++;
 

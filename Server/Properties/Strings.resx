@@ -117,43 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Average" xml:space="preserve">
-    <value>Среднее арифметическое</value>
-  </data>
-  <data name="Configuration_Name_RouterCount" xml:space="preserve">
-    <value>Router Count</value>
-  </data>
-  <data name="Count" xml:space="preserve">
-    <value>Записаних значений</value>
-  </data>
-  <data name="Divergence" xml:space="preserve">
-    <value>Стандартное отклонение</value>
-  </data>
-  <data name="FullCount" xml:space="preserve">
-    <value>Всего значений</value>
-  </data>
-  <data name="Losted" xml:space="preserve">
-    <value>Утеряно пакетов</value>
-  </data>
-  <data name="MaxValue" xml:space="preserve">
-    <value>Максимальное значение</value>
-  </data>
-  <data name="Median" xml:space="preserve">
-    <value>Медиана</value>
-  </data>
-  <data name="MinValue" xml:space="preserve">
-    <value>Минимальное значение</value>
-  </data>
-  <data name="ModeCount" xml:space="preserve">
-    <value>Значений в модах</value>
-  </data>
-  <data name="Modes" xml:space="preserve">
-    <value>Моды</value>
-  </data>
-  <data name="Sum" xml:space="preserve">
-    <value>Сумма значений</value>
-  </data>
-  <data name="UniqueCount" xml:space="preserve">
-    <value>Уникальных значений</value>
+  <data name="Configuration_Name_ValueRange" xml:space="preserve">
+    <value>Value Range</value>
   </data>
 </root>

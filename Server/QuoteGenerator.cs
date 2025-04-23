@@ -43,7 +43,7 @@
 
 				NotifyValue(_id, value);
 
-				var delay = Settings.Current.GenerationDelayMin == Settings.Current.GenerationDelayMax ? 0 : random.Next((int)Settings.Current.GenerationDelayMin, (int)Settings.Current.GenerationDelayMax);
+				var delay = Settings.Current.GenerationDelayMin == Settings.Current.GenerationDelayMax ? Settings.Current.GenerationDelayMin : random.Next(Settings.Current.GenerationDelayMin, Settings.Current.GenerationDelayMax);
 
 				if (delay > 0)
 					Thread.Sleep(delay);

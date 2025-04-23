@@ -17,9 +17,13 @@
 
 		#endregion
 
-		#region Protected Properties
+		#region Public Properties
 
 		public bool Started { get; protected set; }
+
+		#endregion
+
+		#region Protected Properties
 
 		protected bool MustBeStopped { get; set; }
 

@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using System.Xml;
+﻿using System.Xml;
 
-using Resources = Telesyk.StockQuotes.Properties.Resources;
+using Strings = Telesyk.StockQuotes.Properties.Strings;
 
 namespace Telesyk.StockQuotes
 {
@@ -41,19 +40,34 @@ namespace Telesyk.StockQuotes
 
 		protected override void Init(XmlDocument config)
 		{
+			initValuesRangeSettings(config);
+			initGenerationDelaySettings(config);
+		}
+
+		#endregion
+
+		#region Private methods
+
+		private void initValuesRangeSettings(XmlDocument config)
+		{
 			var nodeRange = config.SelectSingleNode("//settings/value-range")!;
 
 			decimal.TryParse(nodeRange.Attributes?["min"]?.InnerText, out decimal minValue);
 			decimal.TryParse(nodeRange.Attributes?["max"]?.InnerText, out decimal maxValue);
 
 			if (minValue >= maxValue)
-				ThrowConfigurationException(Resources.Configuration_Name_ValueRange);
+				ThrowConfigurationException(Strings.Configuration_Name_ValueRange);
 
 			MinValue = minValue;
 			MaxValue = maxValue + Math.Round((decimal)Math.Pow(10, -(Decimals + 1)), Decimals + 1);
+		}
 
-			uint.TryParse(ConfigurationManager.AppSettings["generation-delay-min"], out uint generationDelayMin);
-			uint.TryParse(ConfigurationManager.AppSettings["generation-delay-max"], out uint generationDelayMax);
+		private void initGenerationDelaySettings(XmlDocument config)
+		{
+			var nodeGenerationDelay = config.SelectSingleNode("//settings/generation-delay")!;
+
+			uint.TryParse(nodeGenerationDelay.Attributes?["min"]?.InnerText, out uint generationDelayMin);
+			uint.TryParse(nodeGenerationDelay.Attributes?["max"]?.InnerText, out uint generationDelayMax);
 
 			GenerationDelayMin = (int)generationDelayMin;
 			GenerationDelayMax = (int)generationDelayMax;

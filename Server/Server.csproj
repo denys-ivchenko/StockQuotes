@@ -20,15 +20,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
+    <Compile Remove="Properties\Resources.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Properties\Resources.resx" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Properties\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)Bin\$(TargetName).exe&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)Bin\$(TargetName).exe&quot;" />
   </Target>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Xml;
 
-using Resources = Telesyk.StockQuotes.Properties.Resources;
+using Strings = Telesyk.StockQuotes.Properties.Strings;
 
 namespace Telesyk.StockQuotes
 {
@@ -32,7 +32,7 @@ namespace Telesyk.StockQuotes
 
 		protected void ThrowConfigurationException(string configurationName)
 		{
-			throw new ApplicationException(string.Format(Resources.Configuration_Exception_Message, configurationName));
+			throw new ApplicationException(string.Format(Strings.Configuration_Exception_Message, configurationName));
 		}
 
 		#endregion
@@ -51,12 +51,12 @@ namespace Telesyk.StockQuotes
 			Decimals = int.TryParse(nodeDecimals?.InnerText, out int decimals) ? decimals : 4;
 
 			if (!int.TryParse(nodeMulticastPort?.InnerText, out int multicastPort))
-				ThrowConfigurationException(Resources.Configuration_Name_Port);
+				ThrowConfigurationException(Strings.Configuration_Name_Port);
 
 			MulticastPort = multicastPort;
 
 			try { MulticastIP = IPAddress.Parse(nodeMulticastIP.InnerText); }
-			catch { ThrowConfigurationException(Resources.Configuration_Name_IP); }
+			catch { ThrowConfigurationException(Strings.Configuration_Name_IP); }
 
 			Init(config);
 		}

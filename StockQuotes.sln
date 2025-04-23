@@ -5,17 +5,7 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bin", "Bin", "{F566F34D-E349-4E5A-B5D3-082102B7E5D1}"
 	ProjectSection(SolutionItems) = preProject
-		Bin\Client.dll = Bin\Client.dll
-		Bin\Client.exe = Bin\Client.exe
-		Bin\Client.runtimeconfig.json = Bin\Client.runtimeconfig.json
-		Bin\Server.deps.json = Bin\Server.deps.json
-		Bin\Server.dll = Bin\Server.dll
-		Bin\Server.dll.config = Bin\Server.dll.config
-		Bin\Server.exe = Bin\Server.exe
-		Bin\Server.runtimeconfig.json = Bin\Server.runtimeconfig.json
 		Bin\settings.config = Bin\settings.config
-		Bin\System.Configuration.ConfigurationManager.dll = Bin\System.Configuration.ConfigurationManager.dll
-		Bin\Telesyk.StockQuotes.Common.dll = Bin\Telesyk.StockQuotes.Common.dll
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{8F529D95-C282-4208-A1B6-ADAB0573A172}"

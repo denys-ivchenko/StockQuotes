@@ -13,10 +13,10 @@
 		private decimal _minValue;
 		private decimal _maxValue;
 		private ulong _count;
-		private int _modeCount;
+		private int _modeDuplicates;
 		private decimal _sum;
 		private ulong _lastId;
-		private ulong _failed;
+		private ulong _losted;
 
 		#endregion
 
@@ -57,7 +57,7 @@
 				if (id < _lastId)
 					_lastId = 0;
 
-				_failed += id - 1 - _lastId;
+				_losted += id - 1 - _lastId;
 
 				_lastId = id;
 
@@ -66,13 +66,13 @@
 
 				_values[value]++;
 
-				if (_values[value] > _modeCount)
+				if (_values[value] > _modeDuplicates)
 				{
 					_modes.Clear();
-					_modeCount++;
+					_modeDuplicates++;
 				}
 
-				if (_values[value] >= _modeCount && _modeCount != 1)
+				if (_values[value] >= _modeDuplicates && _modeDuplicates != 1)
 					_modes.Add(value);
 
 				if (!_valuesBuffer.ContainsKey(value))
@@ -102,22 +102,22 @@
 			var maxValue = 0m;
 			var count = 0ul;
 			var uniqueCount = 0;
-			var failed = 0ul;
+			var losted = 0ul;
 			var sum = 0m;
 			var median = 0m;
 			var differenceSum = 0m;
-			var modeCount = 0m;
+			var modeDuplicates = 0m;
 			decimal[]? modes = null;
 
 			lock (_locker)
 			{
 				count = _count;
 				uniqueCount = _values.Count;
-				failed = _failed;
+				losted = _losted;
 				minValue = _minValue;
 				maxValue = _maxValue;
 				sum = _sum;
-				modeCount = _modeCount;
+				modeDuplicates = _modeDuplicates;
 
 				_modes.Sort();
 				modes = _modes.ToArray();
@@ -161,7 +161,7 @@
 
 			var devergence = Math.Round((decimal)Math.Sqrt((double)differenceSum / (count == 0 ? 1 : count)), 4);
 
-			return new CalculatedData(count, uniqueCount, sum, average, median, devergence, failed, minValue, maxValue, modeCount, modes);
+			return new CalculatedData(count, uniqueCount, sum, average, median, devergence, losted, minValue, maxValue, modeDuplicates, modes);
 		}
 
 		#endregion

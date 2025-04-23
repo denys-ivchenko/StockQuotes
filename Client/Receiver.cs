@@ -66,7 +66,7 @@ namespace Telesyk.StockQuotes
 
 		private void init()
 		{
-			try { _client.JoinMulticastGroup(Settings.Current.MulticastIP, Settings.Current.RouterCount); }
+			try { _client.JoinMulticastGroup(Settings.Current.MulticastIP, Settings.Current.RouterQuantity); }
 			catch (Exception error)
 			{
 				Console.WriteLine(error.Message);

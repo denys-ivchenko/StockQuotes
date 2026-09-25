@@ -1,57 +1,57 @@
 ﻿namespace Telesyk.StockQuotes
 {
-	public sealed class QuoteGenerator : ProcessorBase
-	{
-		#region Private Members
+    public sealed class QuoteGenerator : ProcessorBase
+    {
+        #region Private Members
 
-		private Sender _sender = new Sender();
-		private ulong _id;
+        private Sender _sender = new Sender();
+        private ulong _id;
 
-		#endregion
+        #endregion
 
-		#region Constructors
+        #region Constructors
 
-		public QuoteGenerator()
-		{
-			
-		}
+        public QuoteGenerator()
+        {
 
-		#endregion
+        }
 
-		#region Public methods
+        #endregion
 
-		public override void Dispose()
-		{
-			_sender.Dispose();
-		}
+        #region Public methods
 
-		#endregion
+        public override void Dispose()
+        {
+            _sender.Dispose();
+        }
 
-		#region Protected methods
+        #endregion
 
-		protected override void Process()
-		{
-			var random = new Random();
-			var deepRatio = (int)Math.Pow(10, Settings.Current.Decimals + 1);
+        #region Protected methods
 
-			while (!MustBeStopped)
-			{
-				var value = Math.Round((decimal)random.Next((int)(Settings.Current.MinValue * deepRatio), (int)(Settings.Current.MaxValue * deepRatio)) / deepRatio, Settings.Current.Decimals);
+        protected override void Process()
+        {
+            var random = new Random();
+            var deepRatio = (int)Math.Pow(10, Settings.Current.Decimals + 1);
 
-				_id++;
-				_sender.Send(_id, value);
+            while (!MustBeStopped)
+            {
+                var value = Math.Round((decimal)random.Next((int)(Settings.Current.MinValue * deepRatio), (int)(Settings.Current.MaxValue * deepRatio)) / deepRatio, Settings.Current.Decimals);
 
-				NotifyValue(_id, value);
+                _id++;
+                _sender.Send(_id, value);
 
-				var delay = Settings.Current.GenerationDelayMin == Settings.Current.GenerationDelayMax ? Settings.Current.GenerationDelayMin : random.Next(Settings.Current.GenerationDelayMin, Settings.Current.GenerationDelayMax);
+                NotifyValue(_id, value);
 
-				if (delay > 0)
-					Thread.Sleep(delay);
-			}
+                var delay = Settings.Current.GenerationDelayMin == Settings.Current.GenerationDelayMax ? Settings.Current.GenerationDelayMin : random.Next(Settings.Current.GenerationDelayMin, Settings.Current.GenerationDelayMax);
 
-			MustBeStopped = Started = false;
-		}
+                for (var i = 0; i < delay; i++)
+                { }
+            }
 
-		#endregion
-	}
+            MustBeStopped = Started = false;
+        }
+
+        #endregion
+    }
 }

@@ -1,93 +1,126 @@
 ﻿using System.Globalization;
+using System.Text;
 
 namespace Telesyk.StockQuotes
 {
-	internal static class Processor
-	{
-		private static int _heightLength = Console.WindowHeight - 1;
-		private static int _columnLength;
-		private static int _columnCount;
-		private static int _top = 3;
-		private static int _left = 1;
-		private static decimal _lastValue = -1;
+    internal static class Processor
+    {
+        private const int columnMargin = 3;
 
-		static Processor()
-		{
-			_columnLength = $"{((int)Settings.Current.MaxValue)}".Length + Settings.Current.Decimals + 3;
-			_columnCount = (Console.BufferWidth < 96 ? 96 : Console.BufferWidth - 1) / _columnLength;
+        private static readonly int valueLength;
+        private static readonly int columnLength;
+        private static readonly int columnCount;
 
-			Console.BufferWidth = Console.WindowWidth = _columnCount * _columnLength + 1;
-		}
+        private static int top = 2;
+        private static int column = 1;
 
-		public static void Start()
-			=> start();
+        private static decimal lastValue = -1;
 
-		private static void start()
-		{
-			CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
-			CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        static Processor()
+        {
+            valueLength = $"{(int)Settings.Current.MaxValue}".Length + Settings.Current.Decimals + (Settings.Current.Decimals > 0 ? 1 : 0);
+            columnLength = valueLength + columnMargin;
+            columnCount = (Console.BufferWidth - columnMargin) / columnLength;
 
-			Console.Title = "Quotes Generator";
-			Console.CursorVisible = false;
+            Console.BufferWidth = Console.WindowWidth = columnCount * columnLength + columnMargin;
+        }
 
-			using var generator = new QuoteGenerator();
+        public static void Start()
+            => start();
 
-			generator.NewValue += generateNewValue;
+        private static void start()
+        {
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 
-			while (true)
-			{
-				Console.CursorLeft = Console.CursorTop = 0;
-				Console.ForegroundColor = ConsoleColor.White;
+            Console.Title = "Quotes Generator";
+            Console.CursorVisible = false;
 
-				Console.WriteLine();
-				Console.Write($" Started! Press Enter for pausing... Press Ctrl+C or Ctrl+Break to quit.");//                                                                                  ");
+            using var generator = new QuoteGenerator();
 
-				generator.Start();
+            generator.NewValue += generateNewValue;
 
-				Console.ReadKey();
+            while (true)
+            {
+                Console.CursorLeft = columnMargin;
+                Console.CursorTop = 1;
+                Console.ForegroundColor = ConsoleColor.White;
 
-				generator.Cancel();
+                Console.Write($"Started! Press Enter for pausing...       Press Ctrl+C or Ctrl+Break to quit.");//                                                                                  ");
 
-				Console.CursorLeft = Console.CursorTop = 0;
-				Console.ForegroundColor = ConsoleColor.White;
+                generator.Start();
 
-				Console.WriteLine();
-				Console.Write($" Paused!  Press Enter to continue... Press Ctrl+C or Ctrl+Break to quit.");// Type \"quit\" or \"q\" and press Enter for quit or just press Enter to continue: ");
+                Console.ReadKey();
 
-				Console.ReadKey();
-			}
-		}
+                generator.Cancel();
 
-		private static void generateNewValue(object sender, ValueEventArgs args)
-		{
-			if (_lastValue > -1)
-			{
-				Console.CursorTop = _top - 1;
-				Console.CursorLeft = _left * _columnLength - _columnLength + 1;
+                Console.CursorTop = 1;
+                Console.CursorLeft = columnMargin;
+                Console.ForegroundColor = ConsoleColor.White;
 
-				Console.ForegroundColor = ConsoleColor.DarkGreen;
-				Console.Write(_lastValue);
-			}
+                Console.Write($"Paused! Press Enter to continue...        Press Ctrl+C or Ctrl+Break to quit.");// Type \"quit\" or \"q\" and press Enter for quit or just press Enter to continue: ");
 
-			_lastValue = args.Value;
+                Console.ReadKey();
+            }
+        }
 
-			if (_top == _heightLength)
-			{
-				_top = 3;
+        private static void generateNewValue(object sender, ValueEventArgs args)
+        {
+            if (lastValue > -1)
+            {
+                Console.CursorTop = top;
+                Console.CursorLeft = (column - 1) * columnLength + columnMargin;
 
-				_left++;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
 
-				if (_left > _columnCount)
-					_left = 1;
-			}
+                writeValue(lastValue);
+            }
 
-			Console.CursorTop = _top;
-			Console.CursorLeft = _left * _columnLength - _columnLength + 1;
+            lastValue = args.Value;
 
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Write(args.Value);
+            top++;
 
-			_top++;
-		}
-	}
+            if (top == Console.WindowHeight - 1)
+            {
+                top = 3;
+
+                column++;
+
+                if (column > columnCount)
+                    column = 1;
+            }
+
+            if (column == 1 && Console.CursorTop > 2)
+            {
+                Console.CursorLeft = 0;
+                Console.Write(symbols(' ', columnMargin));
+            }
+
+            Console.CursorTop = top;
+            Console.CursorLeft = (column - 1) * columnLength + columnMargin;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            writeValue(args.Value);
+        }
+
+        private static void writeValue(decimal value)
+        {
+            var start = $"{(int)Settings.Current.MaxValue}".Length - $"{(int)value}".Length;
+            var zeros = valueLength - start - $"{value}".Length;
+            var end = columnLength - $"{value}".Length - start;
+
+            Console.Write(symbols(' ', start) + $"{value}" + symbols('0', zeros) + symbols(' ', end));
+        }
+
+        private static string symbols(char symbol, int quantity)
+        {
+            var result = new StringBuilder();
+
+            for (var i = 0; i < quantity; i++)
+                result.Append(symbol);
+
+            return $"{result}";
+        }
+    }
 }

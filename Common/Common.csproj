@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;" />
+    <Exec Command="if not exist &quot;$(SolutionDir)Bin&quot; mkdir -p &quot;$(SolutionDir)Bin&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)settings.config&quot; &quot;$(SolutionDir)Bin\settings.config&quot;" />
   </Target>
 
 </Project>

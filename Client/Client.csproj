@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)Bin\$(TargetName).exe&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SolutionDir)Bin\$(TargetName).runtimeconfig.json&quot;" />
+    <Exec Command="if not exist &quot;$(SolutionDir)Bin&quot; mkdir -p &quot;$(SolutionDir)Bin&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Bin\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)Bin\$(TargetName).exe&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SolutionDir)Bin\$(TargetName).runtimeconfig.json&quot;" />
   </Target>
 
 </Project>

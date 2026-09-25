@@ -43,13 +43,12 @@ namespace Telesyk.StockQuotes
         {
             var config = new XmlDocument();
 
-            try { config.Load(Path.Combine(@"D:\Projects\StockQuotes\Repository\StockQuotes\Bin", "settings.config")); }
-            catch
-            {
-                var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.config");
 
-                config.Load(Path.Combine(directory.Parent?.Parent?.Parent?.FullName!, "settings.config"));
-            }
+            if (!File.Exists(settingsPath))
+                settingsPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.Parent?.FullName!;
+
+            config.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.config"));
 
             var nodeMulticastIP = config.SelectSingleNode("//settings/multicast/ip")!;
             var nodeMulticastPort = config.SelectSingleNode("//settings/multicast/port");
